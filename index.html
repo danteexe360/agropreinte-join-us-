@@ -1,82 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scientific Club Registration</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Join AGROPREINTE Scientific Club</title>
     <style>
+        /* General resets */
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         body {
-            background: linear-gradient(135deg, #1a4b1a, #2a5c2a);
-            color: #f1f8e9;
-            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #0d1f0d 0%, #1a2e1a 50%, #2a4b2a 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e8f5e8;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
             padding: 20px;
+            position: relative;
         }
-
-        .container {
-            max-width: 800px;
+        
+        /* Plant-themed background elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            margin: 0 auto;
-            padding: 20px;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, #3c8d3c22 2%, transparent 25%),
+                radial-gradient(circle at 80% 20%, #8fc08f22 2%, transparent 25%),
+                radial-gradient(circle at 40% 40%, #2e6e2e11 1%, transparent 25%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         header {
             text-align: center;
             margin-bottom: 30px;
             padding: 20px;
-            background: rgba(44, 122, 44, 0.2);
+            background: rgba(42, 75, 42, 0.7);
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(26, 102, 42, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid #3c8d3c;
+            box-shadow: 0 8px 32px rgba(26, 102, 42, 0.3);
         }
 
-        h1 {
-            color: #a5d6a7;
+        header img {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 8px rgba(143, 192, 143, 0.3));
+            border-radius: 10px;
+        }
+
+        header h1 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(13, 31, 13, 0.5);
+            margin: 0 0 10px 0;
+            color: #a5d6a7;
+            text-shadow: 0 2px 4px #1a4b1a;
+            background: linear-gradient(45deg, #8fc08f, #c2f0c2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
-        .subtitle {
+        header p {
+            font-size: 1.1rem;
             color: #c8e6c9;
-            font-size: 1.2rem;
+            text-shadow: 0 1px 2px #1a4b1a;
         }
 
-        .form-container {
-            background: rgba(13, 31, 13, 0.7);
+        form {
+            background: rgba(37, 71, 37, 0.85);
+            padding: 25px 30px;
             border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(26, 102, 42, 0.4);
-            border: 1px solid #3a593a;
+            box-shadow: 0 8px 32px rgba(26, 102, 42, 0.4);
+            max-width: 450px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border: 1px solid #4caf50;
             position: relative;
             overflow: hidden;
         }
 
-        .form-container::before {
-            content: "";
+        form::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             height: 4px;
             background: linear-gradient(90deg, #4caf50, #8bc34a, #cddc39);
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
         }
 
         label {
@@ -86,7 +103,6 @@
             color: #c8e6c9;
             text-shadow: 0 1px 2px #1a4b1a;
         }
-
         input[type="text"],
         input[type="email"],
         select,
@@ -102,7 +118,6 @@
             box-shadow: inset 2px 2px 8px #1c3d1c, 0 2px 4px rgba(26, 102, 42, 0.2);
             transition: all 0.3s ease;
         }
-
         input[type="text"]:focus,
         input[type="email"]:focus,
         select:focus,
@@ -112,12 +127,10 @@
             border-color: #4caf50;
             box-shadow: inset 2px 2px 8px #1c3d1c, 0 0 8px #4caf50;
         }
-
         textarea {
             resize: vertical;
             min-height: 80px;
         }
-
         button {
             width: 100%;
             padding: 14px;
@@ -131,44 +144,40 @@
             box-shadow: 0 6px 12px rgba(44, 122, 44, 0.4);
             transition: all 0.3s ease;
             text-shadow: 0 1px 2px #1a4b1a;
-            margin-top: 10px;
         }
-
         button:hover {
             background: linear-gradient(135deg, #45a049, #4caf50);
             transform: translateY(-2px);
             box-shadow: 0 8px 16px rgba(44, 122, 44, 0.6);
         }
-
         button:active {
             transform: translateY(0);
             box-shadow: 0 4px 8px rgba(44, 122, 44, 0.4);
         }
-
+        
         button:disabled {
             background: linear-gradient(135deg, #7a9c7a, #6b8d6b);
             cursor: not-allowed;
             transform: none;
             box-shadow: 0 4px 8px rgba(44, 122, 44, 0.2);
         }
-
+        
         /* Hide level select initially */
         #levelField {
             display: none;
         }
-
+        
         /* Custom Checkbox */
         .checkbox-group {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
         }
-
         .checkbox-group input[type="checkbox"] {
             margin-right: 10px;
             transform: scale(1.2);
         }
-
+        
         /* Success Modal */
         .modal {
             display: none;
@@ -182,7 +191,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .modal-content {
             background: linear-gradient(135deg, #254725, #2a4b2a);
             padding: 40px;
@@ -194,28 +202,23 @@
             border: 2px solid #4caf50;
             position: relative;
         }
-
         .modal-content::before {
-            content: "✓";
+            content: '🌱';
             font-size: 4rem;
             display: block;
             margin-bottom: 20px;
-            color: #4caf50;
         }
-
         .modal h2 {
             color: #a5d6a7;
             margin-bottom: 15px;
             font-size: 2rem;
         }
-
         .modal p {
             color: #c8e6c9;
             font-size: 1.1rem;
             line-height: 1.6;
             margin-bottom: 25px;
         }
-
         .modal-close {
             background: linear-gradient(135deg, #4caf50, #45a049);
             color: white;
@@ -226,202 +229,254 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .modal-close:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(44, 122, 44, 0.4);
         }
-
+        
         /* Loading spinner */
         .loading {
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255,255,255,.3);
             border-radius: 50%;
             border-top-color: #fff;
             animation: spin 1s ease-in-out infinite;
             margin-right: 10px;
         }
-
+        
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
-        footer {
-            margin-top: 30px;
-            text-align: center;
-            color: #a5d6a7;
-            font-size: 0.9rem;
+        
+        /* Responsive */
+        @media (max-width: 450px) {
+            form {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .modal-content {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Scientific Club Registration</h1>
-            <p class="subtitle">Join our community of science enthusiasts and researchers</p>
-        </header>
+    <header>
+        <img src="https://i.ibb.co/6R25BDG7/IMG-20251024-214536-561.jpg" alt="AGROPREINTE Scientific Club Logo" />
+        <h1>AGROPREINTE Scientific Club</h1>
+        <p>Join us to explore the scientific world of agriculture and plants.</p>
+    </header>
+
+    <form action="https://formspree.io/f/mzzkpgqp" method="POST" id="joinForm">
+        <!-- Formspree hidden fields -->
+        <input type="hidden" name="_subject" value="New AGROPREINTE Club Application">
+        <input type="hidden" name="_replyto" id="replytoEmail">
+        <input type="text" name="_gotcha" style="display:none">
         
-        <div class="form-container">
-            <form id="registrationForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="institution">Institution/Organization</label>
-                    <input type="text" id="institution" name="institution" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="field">Scientific Field of Interest</label>
-                    <select id="field" name="field" required>
-                        <option value="" disabled selected>Select your field</option>
-                        <option value="biology">Biology</option>
-                        <option value="chemistry">Chemistry</option>
-                        <option value="physics">Physics</option>
-                        <option value="mathematics">Mathematics</option>
-                        <option value="computer-science">Computer Science</option>
-                        <option value="engineering">Engineering</option>
-                        <option value="environmental">Environmental Science</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                
-                <div class="form-group" id="levelField">
-                    <label for="level">Academic Level</label>
-                    <select id="level" name="level">
-                        <option value="" disabled selected>Select your level</option>
-                        <option value="undergraduate">Undergraduate</option>
-                        <option value="graduate">Graduate</option>
-                        <option value="phd">PhD</option>
-                        <option value="postdoc">Postdoctoral</option>
-                        <option value="faculty">Faculty</option>
-                        <option value="professional">Professional</option>
-                    </select>
-                </div>
-                
-                <div class="checkbox-group">
-                    <input type="checkbox" id="student" name="student">
-                    <label for="student">I am a student</label>
-                </div>
-                
-                <div class="form-group">
-                    <label for="message">Why do you want to join our scientific club?</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-                
-                <button type="submit" id="submitBtn">
-                    <span class="loading" style="display: none;"></span>
-                    <span id="btnText">Submit Registration</span>
-                </button>
-            </form>
+        <label for="fullname">Full Name *</label>
+        <input type="text" id="fullname" name="fullname" required placeholder="Your full name">
+
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" required placeholder="example@mail.com">
+
+        <label for="cycle">Cycle *</label>
+        <select id="cycle" name="cycle" required>
+            <option value="" disabled selected>Select your cycle</option>
+            <option value="primary">Primary Cycle</option>
+            <option value="secondary">Secondary Cycle</option>
+        </select>
+
+        <div id="levelField">
+            <label for="level">Level *</label>
+            <select id="level" name="level" required>
+                <option value="" disabled selected>Select your level</option>
+            </select>
         </div>
-        
-        <footer>
-            <p>© 2023 Scientific Club | All rights reserved</p>
-        </footer>
-    </div>
-    
+
+        <label for="help">How can you help us at the club? *</label>
+        <textarea id="help" name="help" required placeholder="Share your skills, interests, or how you can contribute to our agricultural research..."></textarea>
+
+        <label for="message">Why do you want to join?</label>
+        <textarea id="message" name="message" placeholder="Tell us your motivation..."></textarea>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="newsletter" name="newsletter" checked>
+            <label for="newsletter">Subscribe to our agriculture research newsletter</label>
+        </div>
+
+        <button type="submit" id="submitBtn">
+            Join Now
+        </button>
+    </form>
+
     <!-- Success Modal -->
-    <div class="modal" id="successModal">
+    <div id="successModal" class="modal">
         <div class="modal-content">
-            <h2>Registration Successful!</h2>
-            <p>Thank you for registering for our scientific club. We'll be in touch soon with more information about upcoming events and activities.</p>
-            <button class="modal-close" id="modalClose">Close</button>
+            <h2>Application Submitted Successfully! 🌿</h2>
+            <p>Thank you for your interest in joining AGROPREINTE Scientific Club! Your application has been received and our team will review it carefully.</p>
+            <p>We'll contact you within 3-5 business days via email with the next steps. Welcome to our growing community of plant science enthusiasts!</p>
+            <button class="modal-close" onclick="closeModal()">Continue</button>
         </div>
     </div>
 
     <script>
+        // Wait for the page to load completely
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('registrationForm');
-            const studentCheckbox = document.getElementById('student');
+            console.log('Page loaded - initializing form...');
+            
+            // Get references to the elements
+            const cycleSelect = document.getElementById('cycle');
             const levelField = document.getElementById('levelField');
-            const submitBtn = document.getElementById('submitBtn');
-            const btnText = document.getElementById('btnText');
-            const loadingSpinner = submitBtn.querySelector('.loading');
+            const levelSelect = document.getElementById('level');
             const successModal = document.getElementById('successModal');
-            const modalClose = document.getElementById('modalClose');
-            
-            // Show/hide level field based on student checkbox
-            studentCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    levelField.style.display = 'block';
-                } else {
-                    levelField.style.display = 'none';
-                }
+            const submitBtn = document.getElementById('submitBtn');
+            const joinForm = document.getElementById('joinForm');
+
+            // Debug log
+            console.log('Elements found:', {
+                cycleSelect: !!cycleSelect,
+                levelField: !!levelField,
+                levelSelect: !!levelSelect,
+                successModal: !!successModal,
+                submitBtn: !!submitBtn,
+                joinForm: !!joinForm
             });
-            
-            // Form submission
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Show loading state
-                submitBtn.disabled = true;
-                loadingSpinner.style.display = 'inline-block';
-                btnText.textContent = 'Processing...';
-                
-                // Get form data
-                const formData = new FormData(form);
-                
-                // Send to Formspree
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        // Reset button state
-                        submitBtn.disabled = false;
-                        loadingSpinner.style.display = 'none';
-                        btnText.textContent = 'Submit Registration';
+
+            // Add event listener for cycle selection
+            if (cycleSelect) {
+                cycleSelect.addEventListener('change', function() {
+                    console.log('Cycle changed to:', this.value);
+                    const selectedCycle = this.value;
+                    
+                    // Clear previous options
+                    levelSelect.innerHTML = '<option value="" disabled selected>Select your level</option>';
+                    
+                    if (selectedCycle === 'primary') {
+                        console.log('Adding primary options');
+                        const primaryOptions = [
+                            { value: '1st_primary', text: 'First Year' },
+                            { value: '2nd_primary', text: 'Second Year' }
+                        ];
                         
-                        // Show success modal
-                        successModal.style.display = 'flex';
+                        primaryOptions.forEach(option => {
+                            const optElement = document.createElement('option');
+                            optElement.value = option.value;
+                            optElement.textContent = option.text;
+                            levelSelect.appendChild(optElement);
+                        });
                         
-                        // Reset form
-                        form.reset();
-                        levelField.style.display = 'none';
+                        // Show level field
+                        levelField.style.display = 'block';
+                        console.log('Level field shown');
+                        
+                    } else if (selectedCycle === 'secondary') {
+                        console.log('Adding secondary options');
+                        const secondaryOptions = [
+                            { value: '1st_secondary', text: 'First Year' },
+                            { value: '2nd_secondary', text: 'Second Year' },
+                            { value: '3rd_secondary', text: 'Third Year' }
+                        ];
+                        
+                        secondaryOptions.forEach(option => {
+                            const optElement = document.createElement('option');
+                            optElement.value = option.value;
+                            optElement.textContent = option.text;
+                            levelSelect.appendChild(optElement);
+                        });
+                        
+                        // Show level field
+                        levelField.style.display = 'block';
+                        console.log('Level field shown');
                     } else {
-                        response.json().then(data => {
-                            if (Object.hasOwn(data, 'errors')) {
-                                alert(data["errors"].map(error => error["message"]).join(", "));
-                            } else {
-                                alert("Oops! There was a problem submitting your form");
+                        // Hide level field if no cycle selected
+                        levelField.style.display = 'none';
+                        console.log('Level field hidden');
+                    }
+                });
+            }
+
+            // Form submission handler
+            if (joinForm) {
+                joinForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    console.log('Form submission started');
+                    
+                    // Update the _replyto field with the actual email
+                    const replyToField = document.getElementById('replytoEmail');
+                    const emailField = document.getElementById('email');
+                    if (replyToField && emailField) {
+                        replyToField.value = emailField.value;
+                        console.log('Updated _replyto to:', emailField.value);
+                    }
+                    
+                    // Show loading state
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
+                    submitBtn.disabled = true;
+                    
+                    try {
+                        console.log('Submitting to Formspree...');
+                        const formData = new FormData(this);
+                        
+                        const response = await fetch(this.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json'
                             }
                         });
+                        
+                        console.log('Formspree response status:', response.status);
+                        
+                        if (response.ok) {
+                            console.log('Form submitted successfully!');
+                            showModal();
+                            this.reset();
+                            levelField.style.display = 'none';
+                        } else {
+                            const errorData = await response.json();
+                            console.error('Formspree error:', errorData);
+                            alert('There was an error submitting your application. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Network error:', error);
+                        alert('Network error. Please check your connection and try again.');
+                    } finally {
+                        // Reset button state
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        console.log('Form submission completed');
                     }
-                }).catch(error => {
-                    alert("Oops! There was a problem submitting your form");
-                }).finally(() => {
-                    // Reset button state in case of error
-                    submitBtn.disabled = false;
-                    loadingSpinner.style.display = 'none';
-                    btnText.textContent = 'Submit Registration';
                 });
-            });
-            
-            // Close modal
-            modalClose.addEventListener('click', function() {
+            }
+
+            // Modal functions
+            window.showModal = function() {
+                console.log('Showing success modal');
+                successModal.style.display = 'flex';
+            }
+
+            window.closeModal = function() {
+                console.log('Closing success modal');
                 successModal.style.display = 'none';
-            });
-            
+                joinForm.reset();
+                levelField.style.display = 'none';
+            }
+
             // Close modal when clicking outside
-            window.addEventListener('click', function(e) {
-                if (e.target === successModal) {
-                    successModal.style.display = 'none';
+            window.onclick = function(event) {
+                if (event.target === successModal) {
+                    closeModal();
                 }
-            });
+            }
+
+            console.log('Form initialization complete');
         });
     </script>
 </body>
 </html>
+
