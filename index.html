@@ -250,6 +250,16 @@
             to { transform: rotate(360deg); }
         }
         
+        /* Debug info */
+        .debug-info {
+            background: rgba(255,0,0,0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            border: 1px solid red;
+        }
+        
         /* Responsive */
         @media (max-width: 450px) {
             form {
@@ -271,12 +281,12 @@
         <p>Join us to explore the scientific world of agriculture and plants.</p>
     </header>
 
-    <!-- ✅ Formspree ID Integrated: mzzkpgqp -->
+    <!-- TEST: Let's try a different Formspree form -->
     <form action="https://formspree.io/f/mzzkpgqp" method="POST" id="joinForm">
-        <!-- Formspree hidden fields for better email formatting -->
-        <input type="hidden" name="_subject" value="New AGROPREINTE Club Application">
+        <!-- Formspree hidden fields -->
+        <input type="hidden" name="_subject" value="TEST - AGROPREINTE Club Application">
         <input type="hidden" name="_replyto" value="{{email}}">
-        <input type="text" name="_gotcha" style="display:none"> <!-- Spam protection -->
+        <input type="text" name="_gotcha" style="display:none">
         
         <label for="fullname">Full Name *</label>
         <input type="text" id="fullname" name="fullname" required placeholder="Your full name" />
@@ -299,7 +309,7 @@
         </div>
 
         <label for="help">How can you help us at the club? *</label>
-        <textarea id="help" name="help" required placeholder="Share your skills, interests, or how you can contribute to our agricultural research..."></textarea>
+        <textarea id="help" name="help" required placeholder="Share your skills, interests, or how you can contribute..."></textarea>
 
         <label for="message">Why do you want to join?</label>
         <textarea id="message" name="message" placeholder="Tell us your motivation..."></textarea>
@@ -312,6 +322,12 @@
         <button type="submit" id="submitBtn">
             Join Now
         </button>
+        
+        <!-- Debug info -->
+        <div class="debug-info" id="debugInfo" style="display: none;">
+            <strong>Debug Info:</strong>
+            <div id="debugContent"></div>
+        </div>
     </form>
 
     <!-- Success Modal -->
@@ -331,6 +347,8 @@
         const levelSelect = document.getElementById('level');
         const successModal = document.getElementById('successModal');
         const submitBtn = document.getElementById('submitBtn');
+        const debugInfo = document.getElementById('debugInfo');
+        const debugContent = document.getElementById('debugContent');
 
         // Add event listener for cycle selection
         cycleSelect.addEventListener('change', function() {
@@ -340,7 +358,6 @@
             levelSelect.innerHTML = '<option value="" disabled selected>Select your level</option>';
             
             if (selectedCycle === 'primary') {
-                // Add primary cycle options
                 const primaryOptions = [
                     { value: '1st_primary', text: 'First Year' },
                     { value: '2nd_primary', text: 'Second Year' }
@@ -353,11 +370,9 @@
                     levelSelect.appendChild(optElement);
                 });
                 
-                // Show level field
                 levelField.style.display = 'block';
                 
             } else if (selectedCycle === 'secondary') {
-                // Add secondary cycle options
                 const secondaryOptions = [
                     { value: '1st_secondary', text: 'First Year' },
                     { value: '2nd_secondary', text: 'Second Year' },
@@ -371,15 +386,13 @@
                     levelSelect.appendChild(optElement);
                 });
                 
-                // Show level field
                 levelField.style.display = 'block';
             } else {
-                // Hide level field if no cycle selected
                 levelField.style.display = 'none';
             }
         });
 
-        // SIMPLE FORM SUBMISSION THAT WILL WORK
+        // Form submission with DEBUGGING
         document.getElementById('joinForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -388,34 +401,44 @@
             submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
             submitBtn.disabled = true;
             
+            // Show debug info
+            debugInfo.style.display = 'block';
+            debugContent.innerHTML = 'Submitting to Formspree...<br>';
+            
             try {
+                const formData = new FormData(this);
+                let formDataString = '';
+                for (let [key, value] of formData.entries()) {
+                    formDataString += `${key}: ${value}<br>`;
+                }
+                debugContent.innerHTML += `Form Data:<br>${formDataString}<br>`;
+                
                 // Submit to Formspree
                 const response = await fetch(this.action, {
                     method: 'POST',
-                    body: new FormData(this),
+                    body: formData,
                     headers: {
                         'Accept': 'application/json'
                     }
                 });
                 
+                debugContent.innerHTML += `Response Status: ${response.status}<br>`;
+                debugContent.innerHTML += `Response OK: ${response.ok}<br>`;
+                
                 if (response.ok) {
-                    // SUCCESS - show modal
+                    debugContent.innerHTML += '✅ Formspree accepted the submission!<br>';
                     showModal();
                     this.reset();
                     levelField.style.display = 'none';
                 } else {
-                    // If there's an error, just show success anyway (Formspree might still process it)
-                    showModal();
-                    this.reset();
-                    levelField.style.display = 'none';
+                    const errorData = await response.json();
+                    debugContent.innerHTML += `❌ Formspree error: ${JSON.stringify(errorData)}<br>`;
+                    alert('There was an issue with Formspree. Check the debug info below.');
                 }
             } catch (error) {
-                // Even if network error, show success (form might have gone through)
-                showModal();
-                this.reset();
-                levelField.style.display = 'none';
+                debugContent.innerHTML += `❌ Network error: ${error.message}<br>`;
+                alert('Network error. Please check your connection.');
             } finally {
-                // Reset button state
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
             }
@@ -430,6 +453,7 @@
             successModal.style.display = 'none';
             document.getElementById('joinForm').reset();
             levelField.style.display = 'none';
+            debugInfo.style.display = 'none';
         }
 
         // Close modal when clicking outside
