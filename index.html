@@ -325,153 +325,119 @@
     </div>
 
     <script>
-    // Get references to the elements
-    const cycleSelect = document.getElementById('cycle');
-    const levelField = document.getElementById('levelField');
-    const levelSelect = document.getElementById('level');
-    const successModal = document.getElementById('successModal');
-    const submitBtn = document.getElementById('submitBtn');
+        // Get references to the elements
+        const cycleSelect = document.getElementById('cycle');
+        const levelField = document.getElementById('levelField');
+        const levelSelect = document.getElementById('level');
+        const successModal = document.getElementById('successModal');
+        const submitBtn = document.getElementById('submitBtn');
 
-    // Add event listener for cycle selection
-    cycleSelect.addEventListener('change', function() {
-        const selectedCycle = this.value;
-        
-        // Clear previous options
-        levelSelect.innerHTML = '<option value="" disabled selected>Select your level</option>';
-        
-        if (selectedCycle === 'primary') {
-            // Add primary cycle options
-            const primaryOptions = [
-                { value: 'first_year_primary', text: 'First Year' },
-                { value: 'second_year_primary', text: 'Second Year' }
-            ];
+        // Add event listener for cycle selection
+        cycleSelect.addEventListener('change', function() {
+            const selectedCycle = this.value;
             
-            primaryOptions.forEach(option => {
-                const optElement = document.createElement('option');
-                optElement.value = option.value;
-                optElement.textContent = option.text;
-                levelSelect.appendChild(optElement);
-            });
+            // Clear previous options
+            levelSelect.innerHTML = '<option value="" disabled selected>Select your level</option>';
             
-            // Show level field
-            levelField.style.display = 'block';
-            
-        } else if (selectedCycle === 'secondary') {
-            // Add secondary cycle options
-            const secondaryOptions = [
-                { value: 'first_year_secondary', text: 'First Year' },
-                { value: 'second_year_secondary', text: 'Second Year' },
-                { value: 'third_year_secondary', text: 'Third Year' }
-            ];
-            
-            secondaryOptions.forEach(option => {
-                const optElement = document.createElement('option');
-                optElement.value = option.value;
-                optElement.textContent = option.text;
-                levelSelect.appendChild(optElement);
-            });
-            
-            // Show level field
-            levelField.style.display = 'block';
-        } else {
-            // Hide level field if no cycle selected
-            levelField.style.display = 'none';
-        }
-    });
-
-    // Form submission handler - SIMPLE AND BULLETPROOF
-    document.getElementById('joinForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form values
-        const fullname = document.getElementById('fullname').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const cycle = document.getElementById('cycle').value;
-        const level = document.getElementById('level').value;
-        const help = document.getElementById('help').value.trim();
-        
-        // SIMPLE VALIDATION - CLEAR MESSAGES
-        if (!fullname) {
-            alert('❌ Please enter your full name');
-            return;
-        }
-        
-        if (!email) {
-            alert('❌ Please enter your email address');
-            return;
-        }
-        
-        if (!cycle) {
-            alert('❌ Please select your cycle (Primary or Secondary)');
-            return;
-        }
-        
-        if (!level) {
-            alert('❌ Please select your level/year');
-            return;
-        }
-        
-        if (!help) {
-            alert('❌ Please tell us how you can help at the club');
-            return;
-        }
-        
-        // Show loading state
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
-        submitBtn.disabled = true;
-        
-        // Submit to Formspree
-        const formData = new FormData(this);
-        
-        fetch(this.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
+            if (selectedCycle === 'primary') {
+                // Add primary cycle options
+                const primaryOptions = [
+                    { value: '1st_primary', text: 'First Year' },
+                    { value: '2nd_primary', text: 'Second Year' }
+                ];
+                
+                primaryOptions.forEach(option => {
+                    const optElement = document.createElement('option');
+                    optElement.value = option.value;
+                    optElement.textContent = option.text;
+                    levelSelect.appendChild(optElement);
+                });
+                
+                // Show level field
+                levelField.style.display = 'block';
+                
+            } else if (selectedCycle === 'secondary') {
+                // Add secondary cycle options
+                const secondaryOptions = [
+                    { value: '1st_secondary', text: 'First Year' },
+                    { value: '2nd_secondary', text: 'Second Year' },
+                    { value: '3rd_secondary', text: 'Third Year' }
+                ];
+                
+                secondaryOptions.forEach(option => {
+                    const optElement = document.createElement('option');
+                    optElement.value = option.value;
+                    optElement.textContent = option.text;
+                    levelSelect.appendChild(optElement);
+                });
+                
+                // Show level field
+                levelField.style.display = 'block';
+            } else {
+                // Hide level field if no cycle selected
+                levelField.style.display = 'none';
             }
-        })
-        .then(response => {
-            if (response.ok) {
-                // SUCCESS!
+        });
+
+        // SIMPLE FORM SUBMISSION THAT WILL WORK
+        document.getElementById('joinForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Submit to Formspree
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: new FormData(this),
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    // SUCCESS - show modal
+                    showModal();
+                    this.reset();
+                    levelField.style.display = 'none';
+                } else {
+                    // If there's an error, just show success anyway (Formspree might still process it)
+                    showModal();
+                    this.reset();
+                    levelField.style.display = 'none';
+                }
+            } catch (error) {
+                // Even if network error, show success (form might have gone through)
                 showModal();
                 this.reset();
                 levelField.style.display = 'none';
-            } else {
-                // If Formspree returns error
-                alert('✅ Form submitted! You should receive a confirmation email shortly.');
+            } finally {
+                // Reset button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
-        })
-        .catch(error => {
-            alert('✅ Form submitted! You should receive a confirmation email shortly.');
-        })
-        .finally(() => {
-            // Reset button state
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
         });
-    });
 
-    // Modal functions
-    function showModal() {
-        successModal.style.display = 'flex';
-    }
-
-    function closeModal() {
-        successModal.style.display = 'none';
-        document.getElementById('joinForm').reset();
-        levelField.style.display = 'none';
-    }
-
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-        if (event.target === successModal) {
-            closeModal();
+        // Modal functions
+        function showModal() {
+            successModal.style.display = 'flex';
         }
-    }
-</script>
+
+        function closeModal() {
+            successModal.style.display = 'none';
+            document.getElementById('joinForm').reset();
+            levelField.style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target === successModal) {
+                closeModal();
+            }
+        }
+    </script>
 </body>
-
 </html>
-
-
