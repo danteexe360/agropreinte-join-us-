@@ -379,31 +379,16 @@
         }
     });
 
-    // Form submission handler with Formspree integration
+    // Simple form submission - let HTML5 and Formspree handle validation
     document.getElementById('joinForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        // Basic validation - let Formspree handle email validation
-        const cycle = document.getElementById('cycle').value;
-        const level = document.getElementById('level').value;
-        const help = document.getElementById('help').value;
-        
-        if (cycle && !level) {
-            alert('Please select your level.');
-            return;
-        }
-        
-        if (!help.trim()) {
-            alert('Please tell us how you can help at the club.');
-            return;
-        }
         
         // Show loading state
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
         submitBtn.disabled = true;
         
-        // Submit to Formspree - let Formspree handle all validation
+        // Submit to Formspree
         const formData = new FormData(this);
         
         fetch(this.action, {
@@ -415,28 +400,17 @@
         })
         .then(response => {
             if (response.ok) {
-                // Success - show modal
                 showModal();
                 this.reset();
                 levelField.style.display = 'none';
             } else {
-                // Let Formspree handle the error
-                return response.json().then(data => {
-                    // If Formspree returns an error about email, show a better message
-                    if (data.error && data.error.includes('email')) {
-                        alert('Please check your email address and make sure it is valid (e.g., yourname@gmail.com).');
-                    } else {
-                        alert('There was a problem submitting your application. Please check all fields and try again.');
-                    }
-                });
+                alert('Please check all fields and try again.');
             }
         })
         .catch(error => {
-            alert('Network error. Please check your connection and try again.');
-            console.error('Form submission error:', error);
+            alert('Network error. Please try again.');
         })
         .finally(() => {
-            // Reset button state
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
         });
@@ -450,7 +424,7 @@
     function closeModal() {
         successModal.style.display = 'none';
         document.getElementById('joinForm').reset();
-        levelField.style.display = 'none'; // Hide level field after reset
+        levelField.style.display = 'none';
     }
 
     // Close modal when clicking outside
@@ -463,3 +437,4 @@
 </body>
 
 </html>
+
