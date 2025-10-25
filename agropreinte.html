@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Join AGROPREINTE Scientific Club</title>
+    <style>
+        /* General resets */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #0d1f0d 0%, #1a2e1a 50%, #2a4b2a 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e8f5e8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Plant-themed background elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, #3c8d3c22 2%, transparent 25%),
+                radial-gradient(circle at 80% 20%, #8fc08f22 2%, transparent 25%),
+                radial-gradient(circle at 40% 40%, #2e6e2e11 1%, transparent 25%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(42, 75, 42, 0.7);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid #3c8d3c;
+            box-shadow: 0 8px 32px rgba(26, 102, 42, 0.3);
+        }
+
+        header img {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 8px rgba(143, 192, 143, 0.3));
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+            color: #a5d6a7;
+            text-shadow: 0 2px 4px #1a4b1a;
+            background: linear-gradient(45deg, #8fc08f, #c2f0c2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        header p {
+            font-size: 1.1rem;
+            color: #c8e6c9;
+            text-shadow: 0 1px 2px #1a4b1a;
+        }
+
+        form {
+            background: rgba(37, 71, 37, 0.85);
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(26, 102, 42, 0.4);
+            max-width: 450px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border: 1px solid #4caf50;
+            position: relative;
+            overflow: hidden;
+        }
+
+        form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4caf50, #8bc34a, #cddc39);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #c8e6c9;
+            text-shadow: 0 1px 2px #1a4b1a;
+        }
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 2px solid #3a593a;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(58, 89, 58, 0.8);
+            color: #f1f8e9;
+            box-shadow: inset 2px 2px 8px #1c3d1c, 0 2px 4px rgba(26, 102, 42, 0.2);
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            background: rgba(75, 107, 75, 0.9);
+            outline: none;
+            border-color: #4caf50;
+            box-shadow: inset 2px 2px 8px #1c3d1c, 0 0 8px #4caf50;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            border: none;
+            border-radius: 10px;
+            color: #e8f5e9;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(44, 122, 44, 0.4);
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px #1a4b1a;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #45a049, #4caf50);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(44, 122, 44, 0.6);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(44, 122, 44, 0.4);
+        }
+        
+        button:disabled {
+            background: linear-gradient(135deg, #7a9c7a, #6b8d6b);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 8px rgba(44, 122, 44, 0.2);
+        }
+        
+        /* Hide level select initially */
+        #levelField {
+            display: none;
+        }
+        
+        /* Custom Checkbox */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 31, 13, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #254725, #2a4b2a);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(26, 102, 42, 0.6);
+            border: 2px solid #4caf50;
+            position: relative;
+        }
+        .modal-content::before {
+            content: '🌱';
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 20px;
+        }
+        .modal h2 {
+            color: #a5d6a7;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+        .modal p {
+            color: #c8e6c9;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .modal-close {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .modal-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(44, 122, 44, 0.4);
+        }
+        
+        /* Loading spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 450px) {
+            form {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .modal-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAYAAADzOTl1AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAetklEQVR4nO3dMW7kOhjG4a8vn+/wokIUmhWnV8vDEzzy+/LBrUdSiWFiSoSAsdA2H+eHfPud1RMRiEYBBEQRAEQRAEQRCEtgXNkz7abkVHAv0E1uVx9Ye0v6+g26G48ucPUy+P6aOm0z00bn8paLipzm9P63suCWa9LNJRDWY8TX6bzr5vmbmjJcbnEqy9tC5v6KRKHrpULmeu1qtLhfaHxYrGX1+PVPU0/oNV6dn49IL5Uu1Woo2PaymR3CYl5v7TViQDwQIhiFw8EnJ9e8LWktK54RxupC9u1lLczE2Mm1BxHuNILv9KOXJ5d7fhJsYT0QFROq8ri2u0LKKqsF9eoAkOSN4Oo1PYYjoXSetww7cA/Gt/BbA9mni8kA1xj15stwG2GcoHzXwr8jX3cYYZJ+oz9Yq/WDLzPFNcDfD5/I9ZONxQBIH7NDAkl1miVXCczcGPDxt+3j0FchKOn5yCv2hXJXe8FaN47WIKO17S+c0oyqJyotLfb4NocAQNaQ/coBesuZNr/a5TFFrHacB8BkQ6RaYed9mkSbpWUPdh+PRLcpIyNpE2RXiR5cbajqQyT+PvhK+zjNbiFQRnMyHeZI0A5shKr+WzA6Lfsqsh0AsuUD5RooPYW4cRHNmjIwm7LIMMp7UHYDVbNxuzVH6FQjEHs0ke6YYQ5WT8f3AxQ6CCxeEkcyNn1uGf3LAaBMwrKztyD9QtpMHusu6FnAqWDqMNx6T9GA0wFYa9tA5PEkZwmWA+k+VX4HwnoUkQDuOxfhkfPzSCFAkEuAByRhLZ6pPp9u2QlPu7ehQdi6t7Pr4HQE6z9BvEjyAdYu0vOdHdH1qQrik17GdyLV8PQHkiy2fm7KO8QkHccJeA+oAxKI87wLs2tgdzY1+WcYzNPmVi+AzqlIJOoGCCxSzyv99e5vmKWEPko7vM1IK9o96VvF6lric2jQzPuJSzUL3dhy9hSb6lzCsA14A9QyjG3QW7zDifJU40uVFdnC6/pWnnZDj82NMPJsU+rD9C9EjugB0pfD71rxXoevDKNCNMeRtP40IZPi+wbgCDO/6h9Xn7mh85AD6MzSB+wlr/xREI730Yfw+S9QxOE3pUz1QVdDPygzOwCfmLhT6BHHFz5P61LL2DKnYB+DWQ+ociwBwXw/xAAFEcV5AbVn0X8vkTiIINBVcDCZ+q0G80dA0KRn/pzdRh81pYyqXnSYWqJ9fr8/gzY/Fwy5PKdPpQVaqQHv8SglEvTyaTQpFEObo+CfpbFItxGBRiSYQrLNLhTUz3B6q+y8YDOW3QkCgAnd5jfb8R+AQxHIQp4NoG4wAAAABJRU5ErkJggg==" alt="AGROPREINTE Logo" />
+        <h1>AGROPREINTE Scientific Club</h1>
+        <p>Join us to explore the scientific world of agriculture and plants.</p>
+    </header>
+
+    <!-- ✅ Formspree ID Integrated: mzzkpgqp -->
+    <form action="https://formspree.io/f/mzzkpgqp" method="POST" id="joinForm">
+        <!-- Formspree hidden fields for better email formatting -->
+        <input type="hidden" name="_subject" value="New AGROPREINTE Club Application">
+        <input type="hidden" name="_replyto" value="{{email}}">
+        <input type="text" name="_gotcha" style="display:none"> <!-- Spam protection -->
+        
+        <label for="fullname">Full Name *</label>
+        <input type="text" id="fullname" name="fullname" required placeholder="Your full name" />
+
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" required placeholder="example@mail.com" />
+
+        <label for="cycle">Cycle *</label>
+        <select id="cycle" name="cycle" required>
+            <option value="" disabled selected>Select your cycle</option>
+            <option value="primary">Primary Cycle</option>
+            <option value="secondary">Secondary Cycle</option>
+        </select>
+
+        <div id="levelField">
+            <label for="level">Level *</label>
+            <select id="level" name="level" required>
+                <option value="" disabled selected>Select your level</option>
+            </select>
+        </div>
+
+        <label for="help">How can you help us at the club? *</label>
+        <textarea id="help" name="help" required placeholder="Share your skills, interests, or how you can contribute to our agricultural research..."></textarea>
+
+        <label for="message">Why do you want to join?</label>
+        <textarea id="message" name="message" placeholder="Tell us your motivation..."></textarea>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="newsletter" name="newsletter" checked>
+            <label for="newsletter">Subscribe to our agriculture research newsletter</label>
+        </div>
+
+        <button type="submit" id="submitBtn">
+            Join Now
+        </button>
+    </form>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h2>Application Submitted Successfully! 🌿</h2>
+            <p>Thank you for your interest in joining AGROPREINTE Scientific Club! Your application has been received and our team will review it carefully.</p>
+            <p>We'll contact you within 3-5 business days via email with the next steps. Welcome to our growing community of plant science enthusiasts!</p>
+            <button class="modal-close" onclick="closeModal()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        // Get references to the elements
+        const cycleSelect = document.getElementById('cycle');
+        const levelField = document.getElementById('levelField');
+        const levelSelect = document.getElementById('level');
+        const successModal = document.getElementById('successModal');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Add event listener for cycle selection
+        cycleSelect.addEventListener('change', function() {
+            const selectedCycle = this.value;
+            
+            // Clear previous options
+            levelSelect.innerHTML = '<option value="" disabled selected>Select your level</option>';
+            
+            if (selectedCycle === 'primary') {
+                // Add primary cycle options
+                const primaryOptions = [
+                    { value: 'first_year_primary', text: 'First Year' },
+                    { value: 'second_year_primary', text: 'Second Year' }
+                ];
+                
+                primaryOptions.forEach(option => {
+                    const optElement = document.createElement('option');
+                    optElement.value = option.value;
+                    optElement.textContent = option.text;
+                    levelSelect.appendChild(optElement);
+                });
+                
+                // Show level field
+                levelField.style.display = 'block';
+                
+            } else if (selectedCycle === 'secondary') {
+                // Add secondary cycle options
+                const secondaryOptions = [
+                    { value: 'first_year_secondary', text: 'First Year' },
+                    { value: 'second_year_secondary', text: 'Second Year' },
+                    { value: 'third_year_secondary', text: 'Third Year' }
+                ];
+                
+                secondaryOptions.forEach(option => {
+                    const optElement = document.createElement('option');
+                    optElement.value = option.value;
+                    optElement.textContent = option.text;
+                    levelSelect.appendChild(optElement);
+                });
+                
+                // Show level field
+                levelField.style.display = 'block';
+            } else {
+                // Hide level field if no cycle selected
+                levelField.style.display = 'none';
+            }
+        });
+
+        // Form submission handler with Formspree integration
+        document.getElementById('joinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate that level is selected if cycle is selected
+            const cycle = document.getElementById('cycle').value;
+            const level = document.getElementById('level').value;
+            const help = document.getElementById('help').value;
+            
+            if (cycle && !level) {
+                alert('Please select your level.');
+                return;
+            }
+            
+            if (!help.trim()) {
+                alert('Please tell us how you can help at the club.');
+                return;
+            }
+            
+            // Show loading state
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
+            submitBtn.disabled = true;
+            
+            // Submit to Formspree
+            const formData = new FormData(this);
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Success - show modal
+                    showModal();
+                    this.reset();
+                    levelField.style.display = 'none';
+                } else {
+                    // Error handling
+                    response.json().then(data => {
+                        if (data.errors) {
+                            alert('Error: ' + data.errors.map(error => error.message).join(', '));
+                        } else {
+                            alert('There was a problem submitting your application. Please try again.');
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                alert('Network error. Please check your connection and try again.');
+                console.error('Form submission error:', error);
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Modal functions
+        function showModal() {
+            successModal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            successModal.style.display = 'none';
+            document.getElementById('joinForm').reset();
+            levelField.style.display = 'none'; // Hide level field after reset
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target === successModal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
