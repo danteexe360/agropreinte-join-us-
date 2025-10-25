@@ -387,12 +387,27 @@
             const cycle = document.getElementById('cycle').value;
             const level = document.getElementById('level').value;
             const help = document.getElementById('help').value;
-            const email = document.getElementById('email').value;
+            const emailInput = document.getElementById('email');
+            const email = emailInput.value.trim(); // Trim whitespace
             
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            // Enhanced email validation
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            
+            // Debug: log the email to see what's actually being submitted
+            console.log('Email submitted:', email);
+            console.log('Email length:', email.length);
+            console.log('Email characters:', Array.from(email).map(c => c.charCodeAt(0)));
+            
+            if (!email) {
+                alert('Please enter your email address.');
+                emailInput.focus();
+                return;
+            }
+            
             if (!emailRegex.test(email)) {
-                alert('Please enter a valid email address.');
+                alert('Please enter a valid email address (e.g., yourname@example.com).');
+                emailInput.focus();
+                emailInput.select();
                 return;
             }
             
@@ -431,7 +446,7 @@
                     // Error handling
                     response.json().then(data => {
                         if (data.errors) {
-                            alert('Error: ' + data.errors.map(error => error.message).join(', '));
+                            alert('Form error: ' + data.errors.map(error => error.message).join(', '));
                         } else {
                             alert('There was a problem submitting your application. Please try again.');
                         }
