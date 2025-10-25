@@ -75,6 +75,10 @@
             flex-direction: column;
         }
 
+        .form-group {
+            margin-bottom: 15px;
+        }
+
         label {
             display: block;
             margin-bottom: 8px;
@@ -342,7 +346,7 @@
             const levelField = document.getElementById('levelField');
             const submitBtn = document.getElementById('submitBtn');
             const btnText = document.getElementById('btnText');
-            const loadingSpinner = document.querySelector('.loading');
+            const loadingSpinner = submitBtn.querySelector('.loading');
             const successModal = document.getElementById('successModal');
             const modalClose = document.getElementById('modalClose');
             
@@ -364,20 +368,46 @@
                 loadingSpinner.style.display = 'inline-block';
                 btnText.textContent = 'Processing...';
                 
-                // Simulate form submission (replace with actual Formspree submission)
-                setTimeout(function() {
-                    // Reset button state
+                // Get form data
+                const formData = new FormData(form);
+                
+                // Send to Formspree
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        // Reset button state
+                        submitBtn.disabled = false;
+                        loadingSpinner.style.display = 'none';
+                        btnText.textContent = 'Submit Registration';
+                        
+                        // Show success modal
+                        successModal.style.display = 'flex';
+                        
+                        // Reset form
+                        form.reset();
+                        levelField.style.display = 'none';
+                    } else {
+                        response.json().then(data => {
+                            if (Object.hasOwn(data, 'errors')) {
+                                alert(data["errors"].map(error => error["message"]).join(", "));
+                            } else {
+                                alert("Oops! There was a problem submitting your form");
+                            }
+                        });
+                    }
+                }).catch(error => {
+                    alert("Oops! There was a problem submitting your form");
+                }).finally(() => {
+                    // Reset button state in case of error
                     submitBtn.disabled = false;
                     loadingSpinner.style.display = 'none';
                     btnText.textContent = 'Submit Registration';
-                    
-                    // Show success modal
-                    successModal.style.display = 'flex';
-                    
-                    // Reset form
-                    form.reset();
-                    levelField.style.display = 'none';
-                }, 2000);
+                });
             });
             
             // Close modal
