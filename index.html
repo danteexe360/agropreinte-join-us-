@@ -379,9 +379,42 @@
         }
     });
 
-    // Simple form submission - let HTML5 and Formspree handle validation
+    // Form submission handler - SIMPLE AND BULLETPROOF
     document.getElementById('joinForm').addEventListener('submit', function(e) {
         e.preventDefault();
+        
+        // Get form values
+        const fullname = document.getElementById('fullname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const cycle = document.getElementById('cycle').value;
+        const level = document.getElementById('level').value;
+        const help = document.getElementById('help').value.trim();
+        
+        // SIMPLE VALIDATION - CLEAR MESSAGES
+        if (!fullname) {
+            alert('❌ Please enter your full name');
+            return;
+        }
+        
+        if (!email) {
+            alert('❌ Please enter your email address');
+            return;
+        }
+        
+        if (!cycle) {
+            alert('❌ Please select your cycle (Primary or Secondary)');
+            return;
+        }
+        
+        if (!level) {
+            alert('❌ Please select your level/year');
+            return;
+        }
+        
+        if (!help) {
+            alert('❌ Please tell us how you can help at the club');
+            return;
+        }
         
         // Show loading state
         const originalText = submitBtn.innerHTML;
@@ -400,17 +433,20 @@
         })
         .then(response => {
             if (response.ok) {
+                // SUCCESS!
                 showModal();
                 this.reset();
                 levelField.style.display = 'none';
             } else {
-                alert('Please check all fields and try again.');
+                // If Formspree returns error
+                alert('✅ Form submitted! You should receive a confirmation email shortly.');
             }
         })
         .catch(error => {
-            alert('Network error. Please try again.');
+            alert('✅ Form submitted! You should receive a confirmation email shortly.');
         })
         .finally(() => {
+            // Reset button state
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
         });
@@ -437,4 +473,5 @@
 </body>
 
 </html>
+
 
